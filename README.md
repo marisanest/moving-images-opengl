@@ -1,1 +1,1 @@
-# Moving Images OpenGL
+# Moving Images with OpenGL
