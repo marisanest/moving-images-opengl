@@ -1,1 +1,1 @@
-# opengl-abstract-moving-images
+# Moving Images OpenGL
