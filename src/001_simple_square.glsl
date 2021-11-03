@@ -25,6 +25,7 @@ void main(){
     float opacity = 1.;
 
     vec2 coord = gl_FragCoord.xy / u_resolution;
+    
 
     if (isSquareV2(coord)) {
         //white = abs(sin((coord.x - coord.y) * frequenz)) * amplification;
