@@ -7,34 +7,11 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-float circle(vec2 coord, float radius) {
-    return length(coord) - radius;
-}
+#include "../libs/edap/2dshapes.glsl"
+#include "../libs/edap/boolean-ops.glsl"
 
 float fill(float dist, float size){
     return smoothstep(-size, size, dist);
-}
-
-float stroke(float dist, float size, float thikness) {
-    float a = smoothstep(-size, +size, dist + thikness);
-    float b = smoothstep(-size, +size, dist - thikness);
-    return a - b;
-}
-
-float merge(float d1, float d2) {
-    return min(d1, d2);
-}
-
-float mergeExclude(float d1, float d2){
-	return min(max(-d1, d2), max(-d2, d1));
-}
-
-float intersect(float d1, float d2){
-	return max(d1, d2);
-}
-
-float subtract(float d1, float d2){
-	return max(-d1, d2);
 }
 
 float dot2(vec2 v) {
