@@ -7,16 +7,15 @@ bool is_within_circle(vec2 coord, float radius) {
 }
 
 float distance_circle_border_to_circle_center(vec2 coord, float radius, float distance_outside_circle_border) {
-    if (length(coord) <= radius) {
+    if (is_within_circle(coord, radius)) {
         return radius - length(coord);
     } else {
         return distance_outside_circle_border;
     }
 }
 
-
 float distance_circle_border_to_circle_center(vec2 coord, float radius) {
-    if (length(coord) <= radius) {
+    if (is_within_circle(coord, radius)) {
         return radius - length(coord);
     } else {
         return -1.;
@@ -24,18 +23,18 @@ float distance_circle_border_to_circle_center(vec2 coord, float radius) {
 }
 
 float distance_circle_border_to_outside(vec2 coord, float radius, float distance_within_circle_border) {
-    if (length(coord) >= radius) {
-        return length(coord) - radius;
-    } else {
+    if (is_within_circle(coord, radius)) {
         return distance_within_circle_border;
+    } else {
+        return length(coord) - radius;
     }
 }
 
 float distance_circle_border_to_outside(vec2 coord, float radius) {
-    if (length(coord) >= radius) {
-        return length(coord) - radius;
-    } else {
+    if (is_within_circle(coord, radius)) {
         return -1.;
+    } else {
+        return length(coord) - radius;
     }
 }
 

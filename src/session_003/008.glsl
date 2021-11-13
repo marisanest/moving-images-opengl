@@ -7,16 +7,37 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-
 #include "../libs/edap/2dshapes.glsl"
 #include "../libs/edap/boolean-ops.glsl"
+#include "../libs/local/2dshapes.glsl"
+
+float adjust_y(float y, float min_y, float max_y) {
+    float ratio = (max_y - min_y) / 2.0;
+    y *= ratio;
+    y += (min_y + (1. * ratio));
+    return y;
+}
+
+float stroke(float distribution, float outer_range, float inner_range, float thikness) {
+    float inner = smoothstep(-inner_range, inner_range, distribution + thikness / 2.);
+    float outer = smoothstep(-outer_range, outer_range, distribution - thikness / 2.);
+    return inner - outer;
+}
+
+float sin(float x, float frequency, float min_y, float max_y) {
+   return adjust_y(sin(x * frequency), min_y, max_y);
+}
+
+float cos(float x, float frequency, float min_y, float max_y) {
+    return adjust_y(cos(x * frequency), min_y, max_y);
+}
 
 void main() {
-    float box_radius = 0.11;
+    float box_radius = 0.15;
     float percentage;
     float radius;
-    float max_radius = 0.04;
-    float smooth_step_size = 0.03;
+    float max_radius = 0.03;
+    float smooth_step_size = 0.02;
     float thikness = 0.05;
     vec2 ratio = vec2(u_resolution.x / u_resolution.y, u_resolution.y / u_resolution.x);
 
@@ -32,9 +53,6 @@ void main() {
     vec4 colorB = vec4(0.549, 0.0, 1.0, 1.0);
     vec4 colorC;
     vec4 colorD = vec4(0.2353, 1.0, 0.0, 1.0);
-    vec4 colorE;
-    vec4 colorF;
-    vec4 colorG = vec4(1.0, 1.0, 1.0, 1.0);
     
     float current_circle;
     float merged_circles;
@@ -45,7 +63,7 @@ void main() {
             percentage = sin((u_time + M_PI * float(x_i) + float(y_i))) + 1.0;
             radius = percentage * max_radius;
             current_circle = circle(vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), radius);
-            
+
             if (x_i == 0 && y_i == 0) {
                 merged_circles = current_circle;
             } else {
@@ -61,15 +79,16 @@ void main() {
         }
     }
 
-    circle_strokes = stroke(merged_circles, smooth_step_size, thikness);
+    circle_strokes = stroke(merged_circles, .002, 0.05, thikness);
     colorC = mix(colorA, colorB, circle_strokes);
 
     for (int x_i = 0; x_i >= 0; ++x_i) {
         for (int y_i = 0; y_i >= 0; ++y_i) {
-            percentage = cos((u_time + M_PI * float(x_i) + float(y_i))) + 1.0;
-            radius = percentage * max_radius;
-            current_circle = circle(vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), radius);
-            
+            current_circle = circle(
+                vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), 
+                sin(u_time, 1., 0.0, .1)
+            );
+
             if (x_i == 0 && y_i == 0) {
                 merged_circles = current_circle;
             } else {
@@ -85,10 +104,14 @@ void main() {
         }
     }
 
-    circle_strokes = stroke(merged_circles, smooth_step_size, thikness);
-    colorE = mix(colorA, colorD, circle_strokes);
+    circle_strokes = stroke(
+        merged_circles, 
+        sin(u_time, 1., 0.005, 0.07),  
+        cos(u_time, 1., 0.005, 0.07), 
+        0.02
+    );
 
-    colorF = mix(colorC, colorE, 0.5);
+    colorC = mix(colorC, colorD, circle_strokes);
 
-    gl_FragColor=colorF;
+    gl_FragColor=colorC;
 }
