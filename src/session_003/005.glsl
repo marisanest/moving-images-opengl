@@ -5,8 +5,9 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-#include "../libs/edap/2dshapes.glsl"
-#include "../libs/edap/boolean-ops.glsl"
+#include "../libs/local/2dshapes.glsl"
+#include "../libs/local/boolean-ops.glsl"
+#include "../libs/local/style.glsl"
 
 void main() {
     float radius = 0.05;

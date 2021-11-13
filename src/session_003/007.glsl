@@ -2,136 +2,88 @@
 precision mediump float;
 #endif
 
-#define M_PI 3.1415926535897932384626433832795
+// good combies: (0.0 - 0.09, 0.1 - 0.2)
+#define MAX_RADIUS 0.05
+#define BOX_RADIUS 0.06 // 0.2
 
 uniform vec2 u_resolution;
 uniform float u_time;
 
-#include "../libs/edap/2dshapes.glsl"
-#include "../libs/edap/boolean-ops.glsl"
-#include "../libs/local/2dshapes.glsl"
-
-float adjust_y(float y, float min_y, float max_y) {
-    float ratio = (max_y - min_y) / 2.0;
-    y *= ratio;
-    y += (min_y + (1. * ratio));
-    return y;
-}
-
-float stroke(float distribution, float outer_range, float inner_range, float thikness) {
-    float inner = smoothstep(-inner_range, inner_range, distribution + thikness / 2.);
-    float outer = smoothstep(-outer_range, outer_range, distribution - thikness / 2.);
-    return inner - outer;
-}
-
-float sin(float x, float frequency, float min_y, float max_y) {
-   return adjust_y(sin(x * frequency), min_y, max_y);
-}
-
-float cos(float x, float frequency, float min_y, float max_y) {
-    return adjust_y(cos(x * frequency), min_y, max_y);
-}
+#include "../libs/local/loops.glsl"
+#include "../libs/local/style.glsl"
 
 void main() {
-    float box_radius = 0.15;
-    float percentage;
-    float radius;
-    float max_radius = 0.03;
-    float smooth_step_size = 0.02;
-    float thikness = 0.05;
     vec2 ratio = vec2(u_resolution.x / u_resolution.y, u_resolution.y / u_resolution.x);
 
-    // why do we need to substract here?
-    float x = gl_FragCoord.x / u_resolution.x - (ratio.y * box_radius);
-    x *= ratio.x;
-    float y = gl_FragCoord.y / u_resolution.y - box_radius;
-
-    vec2 n_boxes = vec2(floor(ratio.x / (box_radius * 2.)), floor(1.0 / (box_radius * 2.)));
-    vec2 margin = vec2((ratio.x - n_boxes.x * 2. * box_radius) / 2., (1.0 - n_boxes.y * 2. * box_radius) / 2.);
+    vec2 coord = gl_FragCoord.xy / u_resolution.xy;
+    coord.x -= (ratio.y * BOX_RADIUS);
+    coord.x *= ratio.x;
+    coord.y -= BOX_RADIUS;
+    
+    vec2 nCircles = vec2(floor(ratio.x / (BOX_RADIUS * 2.)), floor(1.0 / (BOX_RADIUS * 2.)));
+    vec2 margin = vec2((ratio.x - nCircles.x * 2. * BOX_RADIUS) / 2., (1.0 - nCircles.y * 2. * BOX_RADIUS) / 2.);
 
     vec4 colorA = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 colorB = vec4(0.5176, 0.0, 1.0, 1.0);
-    vec4 colorC;
-    vec4 colorD = vec4(0.2353, 1.0, 0.0, 1.0);
-    vec4 colorE = vec4(1.0, 0.5333, 0.0, 1.0);
+    vec4 colorC = vec4(0.2353, 1.0, 0.0, 1.0);
+    vec4 colorD = vec4(1.0, 0.5333, 0.0, 1.0);
+    vec4 resultColor;
     
-    float current_circle;
-    float merged_circles;
-    float circle_strokes;
+    float currentCircle;
+    float circles;
+    float circleStrokes;
 
-    for (int x_i = 0; x_i >= 0; ++x_i) {
-        for (int y_i = 0; y_i >= 0; ++y_i) {
-            percentage = sin((u_time + M_PI * float(x_i) + float(y_i))) + 1.0;
-            radius = percentage * max_radius;
-            current_circle = circle(vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), radius);
+    circles = drawCircles(coord, nCircles, margin, 1, 1);
+    circleStrokes = stroke(circles, .002, 0.05, 0.05);
+    resultColor = mix(colorA, colorB, circleStrokes);
 
-            if (x_i == 0 && y_i == 0) {
-                merged_circles = current_circle;
-            } else {
-                merged_circles = merge(merged_circles, current_circle);
-            }
+    coord = gl_FragCoord.xy / u_resolution.xy;
+    coord.x *= ratio.x;
 
-            if (y_i + 1 >= int(n_boxes.y)) {
-                break;
-            }
-        }
-        if (x_i + 1 >= int(n_boxes.x)) {
-            break;
-        }
-    }
-
-    circle_strokes = stroke(merged_circles, .002, 0.05, thikness);
-    colorC = mix(colorA, colorB, circle_strokes);
-
-    x = gl_FragCoord.x / u_resolution.x;
-    x *= ratio.x;
-    y = gl_FragCoord.y / u_resolution.y; // exchange with gl_FragCoord.x 
-
-    current_circle = circle(
-        vec2(x - ratio.x / 2.0, y - 0.5), 
-        0.2//sin(u_time, 1., 0.0, .1)
+    currentCircle = circle(
+       vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
+       0.2
     );
     
-    circle_strokes = stroke(
-        current_circle, 
+    circleStrokes = stroke(
+        currentCircle, 
         sin(u_time + M_PI, 1., 0.005, 0.07),  
         cos(u_time + M_PI, 1., 0.005, 0.07), 
         0.02
     );
 
-    colorC = mix(colorC, colorD, circle_strokes);
+    resultColor = mix(resultColor, colorC, circleStrokes);
 
-    current_circle = circle(
-        vec2(x - ratio.x / 2.0, y - 0.5), 
+    currentCircle = circle(
+        vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
         sin(u_time, 1., 0.0, .1)
     );
     
-    circle_strokes = stroke(
-        current_circle, 
+    circleStrokes = stroke(
+        currentCircle, 
         sin(u_time, 1., 0.005, 0.07),  
         cos(u_time, 1., 0.005, 0.07), 
         0.02
     );
 
-    colorC = mix(colorC, colorD, circle_strokes);
+    resultColor = mix(resultColor, colorD, circleStrokes);
 
-    x = gl_FragCoord.x / u_resolution.x;
-    x *= ratio.x;
-    y = gl_FragCoord.x / u_resolution.y; // exchange with gl_FragCoord.x 
+    coord = gl_FragCoord.xy / u_resolution.xy; // exchange with gl_FragCoord.xx
+    coord.x *= ratio.x;
 
-    current_circle = circle(
-        vec2(x - ratio.x / 2.0, y - 0.5), 
-        0.2//sin(u_time, 1., 0.0, .1)
+    currentCircle = circle(
+        vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
+        0.2
     );
     
-    circle_strokes = stroke(
-        current_circle, 
-        sin(u_time + M_PI, 1., 0.005, 0.07),  
-        cos(u_time + M_PI, 1., 0.005, 0.07), 
+    circleStrokes = stroke(
+        currentCircle, 
+        sin(u_time + M_PI, 1., 0.005, 0.007),  
+        cos(u_time + M_PI, 1., 0.005, 0.007), 
         0.02
     );
 
-    colorC = mix(colorC, colorE, circle_strokes);
+    resultColor = mix(resultColor, colorC, circleStrokes);
 
-    gl_FragColor=colorC;
+    gl_FragColor=resultColor;
 }

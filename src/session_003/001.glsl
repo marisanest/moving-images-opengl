@@ -5,7 +5,6 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-
 void main(){
     vec2 coord = gl_FragCoord.xy / u_resolution;
     //vec2 coord = 2. * gl_FragCoord.xy / u_resolution - 1.;
@@ -13,7 +12,6 @@ void main(){
 
     vec4 red = vec4(1., 0., 0., 1.);
     vec4 blue = vec4(0., 0., 1., 1.);
-    
     
     //float percantage = coord.x;
     //float percantage = sin(u_time);

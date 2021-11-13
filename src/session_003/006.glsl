@@ -2,93 +2,49 @@
 precision mediump float;
 #endif
 
-#define M_PI 3.1415926535897932384626433832795
+#define MAX_RADIUS 0.04
+#define BOX_RADIUS 0.11
 
 uniform vec2 u_resolution;
 uniform float u_time;
 
-
-#include "../libs/edap/2dshapes.glsl"
-#include "../libs/edap/boolean-ops.glsl"
+#include "../libs/local/loops.glsl"
+#include "../libs/local/style.glsl"
 
 void main() {
-    float box_radius = 0.11;
-    float percentage;
-    float radius;
-    float max_radius = 0.04;
-    float smooth_step_size = 0.03;
-    float thikness = 0.05;
     vec2 ratio = vec2(u_resolution.x / u_resolution.y, u_resolution.y / u_resolution.x);
 
     // why do we need to substract here?
-    float x = gl_FragCoord.x / u_resolution.x - (ratio.y * box_radius);
-    x *= ratio.x;
-    float y = gl_FragCoord.y / u_resolution.y - box_radius;
+    vec2 coord = gl_FragCoord.xy / u_resolution.xy;
+    coord.x -= (ratio.y * BOX_RADIUS);
+    coord.x *= ratio.x;
+    coord.y -= BOX_RADIUS;
 
-    vec2 n_boxes = vec2(floor(ratio.x / (box_radius * 2.)), floor(1.0 / (box_radius * 2.)));
-    vec2 margin = vec2((ratio.x - n_boxes.x * 2. * box_radius) / 2., (1.0 - n_boxes.y * 2. * box_radius) / 2.);
+    vec2 nCircles = vec2(floor(ratio.x / (BOX_RADIUS * 2.)), floor(1.0 / (BOX_RADIUS * 2.)));
+    vec2 margin = vec2((ratio.x - nCircles.x * 2. * BOX_RADIUS) / 2., (1.0 - nCircles.y * 2. * BOX_RADIUS) / 2.);
 
     vec4 colorA = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 colorB = vec4(0.549, 0.0, 1.0, 1.0);
-    vec4 colorC;
-    vec4 colorD = vec4(0.2353, 1.0, 0.0, 1.0);
-    vec4 colorE;
-    vec4 colorF;
-    vec4 colorG = vec4(1.0, 1.0, 1.0, 1.0);
+    vec4 colorC = vec4(0.2353, 1.0, 0.0, 1.0);
+    vec4 resultColorA;
+    vec4 resultColorB;
+    vec4 resultColor;
     
     float current_circle;
-    float merged_circles;
-    float circle_strokes;
+    float circles;
+    float circleStrokes;
+    float percentage;
+    float radius;
 
-    for (int x_i = 0; x_i >= 0; ++x_i) {
-        for (int y_i = 0; y_i >= 0; ++y_i) {
-            percentage = sin((u_time + M_PI * float(x_i) + float(y_i))) + 1.0;
-            radius = percentage * max_radius;
-            current_circle = circle(vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), radius);
-            
-            if (x_i == 0 && y_i == 0) {
-                merged_circles = current_circle;
-            } else {
-                merged_circles = merge(merged_circles, current_circle);
-            }
+    circles = drawCircles(coord, nCircles, margin, 1, 1);
+    circleStrokes = stroke(circles, .002, 0.05, 0.05);
+    resultColorA = mix(colorA, colorB, circleStrokes);
 
-            if (y_i + 1 >= int(n_boxes.y)) {
-                break;
-            }
-        }
-        if (x_i + 1 >= int(n_boxes.x)) {
-            break;
-        }
-    }
+    circles = drawCircles(coord, nCircles, margin, 3, 1);
+    circleStrokes = stroke(circles, 0.03, 0.005, 0.05);
+    resultColorB = mix(colorA, colorC, circleStrokes);
 
-    circle_strokes = stroke(merged_circles, smooth_step_size, thikness);
-    colorC = mix(colorA, colorB, circle_strokes);
+    resultColor = mix(resultColorA, resultColorB, 0.5);
 
-    for (int x_i = 0; x_i >= 0; ++x_i) {
-        for (int y_i = 0; y_i >= 0; ++y_i) {
-            percentage = cos((u_time + M_PI * float(x_i) + float(y_i))) + 1.0;
-            radius = percentage * max_radius;
-            current_circle = circle(vec2(x - margin.x - float(x_i) * 2. * box_radius, y - margin.y - float(y_i) * 2. * box_radius), radius);
-            
-            if (x_i == 0 && y_i == 0) {
-                merged_circles = current_circle;
-            } else {
-                merged_circles = merge(merged_circles, current_circle);
-            }
-
-            if (y_i + 1 >= int(n_boxes.y)) {
-                break;
-            }
-        }
-        if (x_i + 1 >= int(n_boxes.x)) {
-            break;
-        }
-    }
-
-    circle_strokes = stroke(merged_circles, smooth_step_size, thikness);
-    colorE = mix(colorA, colorD, circle_strokes);
-
-    colorF = mix(colorC, colorE, 0.5);
-
-    gl_FragColor=colorF;
+    gl_FragColor=resultColor;
 }
