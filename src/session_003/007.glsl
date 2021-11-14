@@ -3,8 +3,8 @@ precision mediump float;
 #endif
 
 // good combies: (0.0 - 0.09, 0.1 - 0.2)
-#define MAX_RADIUS 0.05
-#define BOX_RADIUS 0.06 // 0.2
+#define MAX_RADIUS 0.06
+#define BOX_RADIUS 0.06
 
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -47,9 +47,9 @@ void main() {
     
     circleStrokes = stroke(
         currentCircle, 
-        sin(u_time + M_PI, 1., 0.005, 0.07),  
-        cos(u_time + M_PI, 1., 0.005, 0.07), 
-        0.02
+        sin(u_time + M_PI, 1., 0.005, 0.08),  
+        cos(u_time + M_PI, 1., 0.005, 0.08), 
+        0.03
     );
 
     resultColor = mix(resultColor, colorC, circleStrokes);
@@ -61,8 +61,8 @@ void main() {
     
     circleStrokes = stroke(
         currentCircle, 
-        sin(u_time, 1., 0.005, 0.07),  
-        cos(u_time, 1., 0.005, 0.07), 
+        sin(u_time, 1., 0.005, 0.03),  
+        cos(u_time, 1., 0.005, 0.03), 
         0.02
     );
 
@@ -78,9 +78,9 @@ void main() {
     
     circleStrokes = stroke(
         currentCircle, 
-        sin(u_time + M_PI, 1., 0.005, 0.007),  
-        cos(u_time + M_PI, 1., 0.005, 0.007), 
-        0.02
+        sin(u_time + M_PI, 1., 0.005, 0.08),  
+        cos(u_time + M_PI, 1., 0.005, 0.08), 
+        0.04
     );
 
     resultColor = mix(resultColor, colorC, circleStrokes);
