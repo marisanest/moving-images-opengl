@@ -37,53 +37,53 @@ void main() {
     circleStrokes = stroke(circles, .002, 0.05, 0.05);
     resultColor = mix(colorA, colorB, circleStrokes);
 
-    coord = gl_FragCoord.xy / u_resolution.xy;
-    coord.x *= ratio.x;
+    // coord = gl_FragCoord.xy / u_resolution.xy;
+    // coord.x *= ratio.x;
 
-    currentCircle = circle(
-       vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
-       0.2
-    );
+    // currentCircle = circle(
+    //    vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
+    //    0.2
+    // );
     
-    circleStrokes = stroke(
-        currentCircle, 
-        sin(u_time + M_PI, 1., 0.005, 0.08),  
-        cos(u_time + M_PI, 1., 0.005, 0.08), 
-        0.03
-    );
+    // circleStrokes = stroke(
+    //     currentCircle, 
+    //     sin(u_time + M_PI, 1., 0.005, 0.08),  
+    //     cos(u_time + M_PI, 1., 0.005, 0.08), 
+    //     0.03
+    // );
 
-    resultColor = mix(resultColor, colorC, circleStrokes);
+    // resultColor = mix(resultColor, colorC, circleStrokes);
 
-    currentCircle = circle(
-        vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
-        sin(u_time, 1., 0.0, .1)
-    );
+    // currentCircle = circle(
+    //     vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
+    //     sin(u_time, 1., 0.0, .1)
+    // );
     
-    circleStrokes = stroke(
-        currentCircle, 
-        sin(u_time, 1., 0.005, 0.03),  
-        cos(u_time, 1., 0.005, 0.03), 
-        0.02
-    );
+    // circleStrokes = stroke(
+    //     currentCircle, 
+    //     sin(u_time, 1., 0.005, 0.03),  
+    //     cos(u_time, 1., 0.005, 0.03), 
+    //     0.02
+    // );
 
-    resultColor = mix(resultColor, colorD, circleStrokes);
+    // resultColor = mix(resultColor, colorD, circleStrokes);
 
-    coord = gl_FragCoord.xy / u_resolution.xy; // exchange with gl_FragCoord.xx
-    coord.x *= ratio.x;
+    // coord = gl_FragCoord.xy / u_resolution.xy; // exchange with gl_FragCoord.xx
+    // coord.x *= ratio.x;
 
-    currentCircle = circle(
-        vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
-        0.2
-    );
+    // currentCircle = circle(
+    //     vec2(coord.x - ratio.x / 2.0, coord.y - 0.5), 
+    //     0.2
+    // );
     
-    circleStrokes = stroke(
-        currentCircle, 
-        sin(u_time + M_PI, 1., 0.005, 0.08),  
-        cos(u_time + M_PI, 1., 0.005, 0.08), 
-        0.04
-    );
+    // circleStrokes = stroke(
+    //     currentCircle, 
+    //     sin(u_time + M_PI, 1., 0.005, 0.08),  
+    //     cos(u_time + M_PI, 1., 0.005, 0.08), 
+    //     0.04
+    // );
 
-    resultColor = mix(resultColor, colorC, circleStrokes);
+    // resultColor = mix(resultColor, colorC, circleStrokes);
 
     gl_FragColor=resultColor;
 }

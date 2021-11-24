@@ -24,8 +24,9 @@ void main() {
     vec2 margin = vec2((ratio.x - nCircles.x * 2. * BOX_RADIUS) / 2., (1.0 - nCircles.y * 2. * BOX_RADIUS) / 2.);
 
     vec4 colorA = vec4(1.0, 1.0, 1.0, 1.0);
-    vec4 colorB = vec4(0.549, 0.0, 1.0, 1.0);
-    vec4 colorC = vec4(0.2353, 1.0, 0.0, 1.0);
+    vec4 colorC = vec4(0.5176, 0.0, 1.0, 1.0);
+    vec4 colorB = vec4(1.0, 0.5333, 0.0, 1.0);
+    vec4 color = vec4(0.2353, 1.0, 0.0, 1.0);
     vec4 resultColorA;
     vec4 resultColorB;
     vec4 resultColor;
