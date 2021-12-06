@@ -1,18 +1,28 @@
 #define M_PI 3.1415926535897932384626433832795
 
-float adjustY(float y, float minY, float maxY) {
-    float ratio = (maxY - minY) / 2.0;
-    y *= ratio;
-    y += (minY + (1. * ratio));
-    return y;
+float applyMinMax(float value, float minValue, float maxValue) {
+    float ratio = (maxValue - minValue) / 2.0;
+    value *= ratio;
+    value += (minValue + (1. * ratio));
+    return value;
 }
 
-float sin(float x, float frequency, float minY, float maxY) {
-   return adjustY(sin(x * frequency), minY, maxY);
+float applyFrequency(float value, float frequency) {
+    return value * frequency;
 }
 
-float cos(float x, float frequency, float minY, float maxY) {
-    return adjustY(cos(x * frequency), minY, maxY);
+float sin(float value, float frequency, float minValue, float maxValue) {
+    value = applyFrequency(value, frequency);
+    value = sin(value);
+    value = applyMinMax(value, minValue, maxValue);
+    return value;
+}
+
+float cos(float value, float frequency, float minValue, float maxValue) {
+    value = applyFrequency(value, frequency);
+    value = cos(value);
+    value = applyMinMax(value, minValue, maxValue);
+    return value;
 }
 
 float dot2(vec2 x) {
