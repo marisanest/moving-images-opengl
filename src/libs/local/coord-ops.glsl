@@ -1,5 +1,9 @@
-vec2 centerCoord(vec2 coord, vec2 monitorResolution) {
-    return 2.0 * coord.xy / monitorResolution.xy - 1.0;
+vec2 normalizeCoord(vec2 coord, vec2 monitorResolution) {
+    return coord.xy / monitorResolution.xy;
+}
+
+vec2 centerCoord(vec2 coord) {
+    return 2.0 * coord - 1.0;
 }
 
 vec2 fixCoordRatio(vec2 coord, vec2 monitorResolution) {
@@ -8,10 +12,12 @@ vec2 fixCoordRatio(vec2 coord, vec2 monitorResolution) {
 }
 
 vec2 setupCoord(vec2 coord, vec2 monitorResolution) {
-    vec2 centeredCoord = centerCoord(coord, monitorResolution);
-    centeredCoord = fixCoordRatio(centeredCoord, monitorResolution);
+    vec2 setupedCoord = coord;
+    setupedCoord = normalizeCoord(setupedCoord, monitorResolution);
+    setupedCoord = centerCoord(setupedCoord);
+    setupedCoord = fixCoordRatio(setupedCoord, monitorResolution);
 
-    return centeredCoord;
+    return setupedCoord;
 }
 
 vec2 rotateCoord(vec2 coord, float angle) {

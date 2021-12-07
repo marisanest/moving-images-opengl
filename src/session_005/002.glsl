@@ -5,56 +5,43 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-float box(vec2 p,vec2 b ){  
-    vec2 d = abs(p)-b;
-    return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
-}
-
-float fill(float dist, float size){
-    return smoothstep(-size, +size, dist);
-}
-
-mat2 rotate2d(float _angle){
-    return mat2(cos(_angle),-sin(_angle), sin(_angle),cos(_angle));
-}
-
-mat2 scale(vec2 _scale){
-    return mat2(_scale.x,0.0, 0.0,_scale.y);
-}
+#include "../libs/local/2dshapes.glsl"
+#include "../libs/local/boolean-ops.glsl"
+#include "../libs/local/colors.glsl"
+#include "../libs/local/coord-ops.glsl"
+#include "../libs/local/style.glsl"
+#include "../libs/local/smiley.glsl"
+#include "../libs/local/circle-line.glsl"
 
 void main() {
-    vec2 st = gl_FragCoord.xy / u_resolution.xy;
-    st.x *= u_resolution.x / u_resolution.y;
+    vec2 st = normalizeCoord(gl_FragCoord.xy, u_resolution);
+    st = fixCoordRatio(st, u_resolution);
 
+    vec4 currentColor = BLACK;
 
-    st *= 4.;
-    st.x += step(1.0, mod(st.y, 2.0)) * u_time * 0.5;
-     
-    st.x += step(1.0, mod(st.y, 2.0)) * 0.5;
-    st.x += step(mod(st.y, 2.0), 1.0) * u_time * -0.5;   
+    st = scaleCoord(st, vec2(4., 4.));
+    st = rotateCoord(st, sin(u_time, 0.25, -1., 1.) * 0.25 * M_PI);
+    st = translateCoord(st, vec2(step(1.0, mod(st.y, 2.0)) * 0.5, 0.0));
+
+    float stepX = step(1.0, mod(st.x, 2.0));
+    float stepY = step(1.0, mod(st.y, 2.0));
+
+    vec4 smileyColor;
+
+    if (stepX == 0. || stepY == 0.) {
+        smileyColor = LILA; 
+    } else {
+        smileyColor = WHITE;
+    }
+
     st = fract(st);
     
-    //st.x += sin(st.y * 7.0) * 0.5;
-    //st.x = mod(st.x, 1.); // return x modulo of 0.5
-    //st.x = fract(st.x); // return only the fraction part of a number
-    //st.x = ceil(x);  // nearest integer that is greater than or equal to x
-    // st.x = floor(st.x); // nearest integer less than or equal to x
-    //st.x = sign(x);  // extract the sign of x
-    //st.x = abs(x);   // return the absolute value of x
-    //st.x = clamp(x,0.0,1.0); // constrain x to lie between 0.0 and 1.0
-    //st.x = min(st.y, st.x);   // return the lesser of x and 0.0
-    //st.x = max(st.y, st.x);   // return the greater of x and 0.0 
-    
-    vec3 boxColor = vec3(1.0);
-    vec3 color = vec3(st, .0);
-    
-    vec2 boxPos = st - 0.5;
-    //boxPos.y += sin((boxPos.x + u_time * 0.6)* 19.0) * 0.1;
-    //boxPos = rotate2d(sin(u_time * 1.)) * boxPos;
-    //boxPos *= scale(vec2(sin(u_time)));
-    float b = box(boxPos, vec2(0.2));
-    b = fill(b, 0.);
-    color = mix(boxColor, color, b);
+    vec2 smileySt = st;
+    smileySt = translateCoord(smileySt, vec2(-0.5));
+    smileySt = scaleCoord(smileySt, vec2(1.75));
+    smileySt = rotateCoord(smileySt, stepY * M_PI);
 
-    gl_FragColor = vec4(color, 1.0);
+    currentColor = smiley(smileySt, smileyColor, currentColor, false);
+
+    gl_FragColor = currentColor;
 }
