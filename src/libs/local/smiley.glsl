@@ -1,7 +1,7 @@
 vec2 updateSmileyEyeCoord(vec2 coord, float translateValueX, float cosMaxValue) {
     vec2 updatedCoord = translateCoord(
         coord, 
-        vec2(translateValueX, cos(u_time, 1.0, -.4, cosMaxValue))
+        vec2(translateValueX, adjustedCos(u_time, 1.0, -.4, cosMaxValue))
     );
     updatedCoord = scaleCoord(
         updatedCoord, 
@@ -16,14 +16,14 @@ float smileyEye(vec2 coord) {
         coord, 
         vec2(.0, .0), 
         vec2(.0, .0), 
-        vec2(.0, sin(u_time, 1.0, 0.0, 0.1))
+        vec2(.0, adjustedSin(u_time, 1.0, 0.0, 0.1))
     );
 }
 
 vec2 updateSmileyMouthCoord(vec2 coord) {
     return translateCoord(
         coord, 
-        vec2(0.0, sin(u_time, 1.0, 0.2, 0.5))
+        vec2(0.0, adjustedSin(u_time, 1.0, 0.2, 0.5))
     );
 }
 
@@ -31,7 +31,7 @@ float smileyMouth(vec2 coord) {
     return sdBezier(
         coord, 
         vec2(-.4, .0), 
-        vec2(.0, cos(u_time, 1.0, -0.5, 0.3)), 
+        vec2(.0, adjustedCos(u_time, 1.0, -0.5, 0.3)), 
         vec2(0.4, .0)
     );
 }

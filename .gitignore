@@ -1,2 +1,6 @@
 src/libs/*
 !src/libs/local
+
+src/*/images*/
+
+*.frag

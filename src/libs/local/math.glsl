@@ -11,14 +11,14 @@ float applyFrequency(float value, float frequency) {
     return value * frequency;
 }
 
-float sin(float value, float frequency, float minValue, float maxValue) {
+float adjustedSin(float value, float frequency, float minValue, float maxValue) {
     value = applyFrequency(value, frequency);
     value = sin(value);
     value = applyMinMax(value, minValue, maxValue);
     return value;
 }
 
-float cos(float value, float frequency, float minValue, float maxValue) {
+float adjustedCos(float value, float frequency, float minValue, float maxValue) {
     value = applyFrequency(value, frequency);
     value = cos(value);
     value = applyMinMax(value, minValue, maxValue);

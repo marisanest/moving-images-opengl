@@ -20,7 +20,7 @@ void main() {
     vec4 currentColor = BLACK;
 
     st = scaleCoord(st, vec2(4., 4.));
-    st = rotateCoord(st, sin(u_time, 0.25, -1., 1.) * 0.25 * M_PI);
+    st = rotateCoord(st, adjustedSin(u_time, 0.25, -1., 1.) * 0.25 * M_PI);
     st = translateCoord(st, vec2(step(1.0, mod(st.y, 2.0)) * 0.5, 0.0));
 
     float stepX = step(1.0, mod(st.x, 2.0));

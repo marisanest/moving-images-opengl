@@ -7,11 +7,11 @@ float calculateRadiusDefault() {
 }
 
 float calculateRadiusV1(int xI, int yI) {
-    return MAX_RADIUS * sin(u_time + M_PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
+    return MAX_RADIUS * adjustedCos(u_time + M_PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
 }
 
 float calculateRadiusV2() {
-    return sin(u_time, 1., 0.0, .1);
+    return adjustedCos(u_time, 1., 0.0, .1);
 }
 
 float calculateRadiusV3(int xI, int yI) {
