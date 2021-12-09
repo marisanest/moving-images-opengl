@@ -22,7 +22,7 @@ vec4 circleLine(vec2 st, vec4 innerCircleColor, vec4 outerCircleColor, vec4 curr
 
     float translationValue = adjustedCos(u_time, 1., 0.1, .5);
 
-    circleBaseSt = rotateCoord(circleBaseSt, sin(u_time + rotateFactor * M_PI));    
+    circleBaseSt = rotateCoord(circleBaseSt, sin(u_time + rotateFactor * PI));    
     circleBaseSt = scaleCoord(circleBaseSt, vec2(1., adjustedCos(u_time, 1.0, 0., maxBaseScaleFactor))); // vec2(1., .0), vec2(1., .5)
     circleLeftSt = circleBaseSt;
     circleRightBSt = circleBaseSt;

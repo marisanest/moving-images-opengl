@@ -1,4 +1,4 @@
-#define M_PI 3.1415926535897932384626433832795
+#define PI 3.1415926535897932384626433832795
 
 float applyMinMax(float value, float minValue, float maxValue) {
     float ratio = (maxValue - minValue) / 2.0;
