@@ -17,9 +17,9 @@ void main() {
     vec4 colorB = vec4(1.0, 0.0, 0.0, 1.0);
     vec4 colorC = vec4(0.3098, 0.5961, 0.6471, 1.0);
 
-    float circleA = circle(coord + vec2(cos(0.8 * (u_time + M_PI)), cos(.8 * (u_time + M_PI))), 0.5);
+    float circleA = circle(coord + vec2(cos(0.8 * (u_time + PI)), cos(.8 * (u_time + PI))), 0.5);
     float circleB = circle(coord + vec2(cos(0.5 * u_time), cos(0.5 * u_time)), 0.5);
-    float circleC = circle(coord + vec2(sin(0.4 * u_time + M_PI), -sin(0.4 * u_time + M_PI)), 0.5);
+    float circleC = circle(coord + vec2(sin(0.4 * u_time + PI), -sin(0.4 * u_time + PI)), 0.5);
     float circleD = circle(coord + vec2(sin(0.6 * u_time), -sin(0.6 * u_time)), 0.5);
      
     float resultA = mergeExclude(circleA, circleB);

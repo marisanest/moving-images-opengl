@@ -14,7 +14,7 @@ void main(){
     vec4 color_a = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 color_b = vec4(1.0, 0.0, 0.0, 1.0);
    
-    float circel_a = distance_circle_border_to_outside(
+    float circel_a = distanceCircleBorderToOutside(
         coord, 
         abs(cos(u_time * .5)),
         abs(cos(u_time * .5))
@@ -23,7 +23,7 @@ void main(){
     vec4 result = mix(color_a, color_b, circel_a);
 
     for(int i = 0; i < 0; ++i){
-        float circel_b = distance_circle_border_to_outside(
+        float circel_b = distanceCircleBorderToOutside(
             coord, 
             abs(cos(u_time * (float(i) + 1.) * .2)),
             abs(cos(u_time * .5))

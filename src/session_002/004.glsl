@@ -2,7 +2,7 @@
 precision mediump float;
 #endif
 
-#include "../libs/local/2d_shapes.glsl"
+#include "../libs/local/2dshapes.glsl"
 
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -14,7 +14,7 @@ void main(){
     vec4 color_a = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 color_b = vec4(1.0, 0.0, 0.0, 1.0);
    
-    float circel_a = distance_circle_border_to_both_sides(
+    float circel_a = distanceCircleBorderToBothSides(
         coord, 
         abs(cos(u_time * .5))
     );
@@ -22,7 +22,7 @@ void main(){
     vec4 result = mix(color_a, color_b, circel_a);
 
     for(int i = 0; i < 3; ++i){
-        float circel_b = distance_circle_border_to_both_sides(
+        float circel_b = distanceCircleBorderToBothSides(
             coord, 
             abs(cos(u_time * (float(i) + 1.) * .2))
         );

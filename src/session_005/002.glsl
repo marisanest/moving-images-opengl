@@ -18,7 +18,7 @@ void main() {
     st = fixCoordRatio(st, u_resolution);
 
     st = scaleCoord(st, vec2(4., 4.));
-    st = rotateCoord(st, adjustedSin(u_time, 0.25, -1., 1.) * 0.25 * M_PI);
+    st = rotateCoord(st, adjustedSin(u_time, 0.25, -1., 1.) * 0.25 * PI);
     st = translateCoord(st, vec2(step(1.0, mod(st.y, 2.0)) * 0.5, 0.0));
 
     float stepX = step(1.0, mod(st.x, 2.0));
@@ -29,7 +29,7 @@ void main() {
 
     smileySt = translateCoord(smileySt, vec2(-0.5));
     smileySt = scaleCoord(smileySt, vec2(adjustedSin(u_time, 1.0, 1.5, 3.0)));
-    smileySt = rotateCoord(smileySt, sin(u_time + stepY * M_PI));
+    smileySt = rotateCoord(smileySt, sin(u_time + stepY * PI));
 
     vec4 currentColor = BLACK;
     vec4 smileyColor = WHITE;

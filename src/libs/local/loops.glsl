@@ -7,7 +7,7 @@ float calculateRadiusDefault() {
 }
 
 float calculateRadiusV1(int xI, int yI) {
-    return MAX_RADIUS * adjustedCos(u_time + M_PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
+    return MAX_RADIUS * adjustedCos(u_time + PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
 }
 
 float calculateRadiusV2() {
@@ -15,7 +15,7 @@ float calculateRadiusV2() {
 }
 
 float calculateRadiusV3(int xI, int yI) {
-    return MAX_RADIUS * cos(u_time + M_PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
+    return MAX_RADIUS * adjustedCos(u_time + PI * float(xI) + float(yI), 1.0, 0.0, 2.0);
 }
 
 float calculateRadius(int radiusV, int xI, int yI) {

@@ -2,7 +2,7 @@
 precision mediump float;
 #endif
 
-#include "../libs/local/2d_shapes.glsl"
+#include "../libs/local/2dshapes.glsl"
 
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -17,7 +17,7 @@ void main(){
     float side_x = (abs(cos(u_time * frequency)) * max_side) + min_side;
     float side_y = (abs(sin(u_time * frequency)) * max_side) + min_side;
 
-    if (is_within_box(coord, vec2(side_x, side_y))) {
+    if (isWithinBox(coord, vec2(side_x, side_y))) {
         gl_FragColor=vec4(1.0, 1.0, 1.0, 1.0);
     } else {
         gl_FragColor=vec4(1.0, 0.0, 0.0, 1.0);

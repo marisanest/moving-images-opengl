@@ -19,7 +19,7 @@ void main() {
 
     currentColor = circleLine(st, WHITE, LILA, currentColor, 0.0, 1.0);
     currentColor = circleLine(st, LILA, WHITE, currentColor, 0.0, .0);
-    currentColor = circleLine(rotateCoord(st, 0.5 * M_PI), BLACK, GREEN, currentColor, 0.0, .0);
+    currentColor = circleLine(rotateCoord(st, 0.5 * PI), BLACK, GREEN, currentColor, 0.0, .0);
 
     currentColor = smiley(st, BLACK, currentColor, mod(u_time, 10.) < 5.);
 

@@ -40,8 +40,8 @@ void main() {
     circles = drawCircles(coord, nCircles, margin, 2, 1);
     circleStrokes = stroke(
         circles, 
-        sin(u_time, 1., 0.005, 0.07),  
-        cos(u_time, 1., 0.005, 0.07), 
+        adjustedSin(u_time, 1., 0.005, 0.07),  
+        adjustedCos(u_time, 1., 0.005, 0.07), 
         0.02
     );
     resultColor = mix(resultColor, colorC, circleStrokes);

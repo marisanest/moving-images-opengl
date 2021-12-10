@@ -19,8 +19,8 @@ void main() {
     vec4 currentColor = BLACK;
     
     currentColor = circleLine(scaleCoord(st, vec2(0.2)), BLACK, WHITE, currentColor, 0.5, 0.);
-    currentColor = circleLine(rotateCoord(scaleCoord(st, vec2(0.2)), 0.25 * M_PI), WHITE, BLACK, currentColor, 0.5, 0.0);
-    currentColor = circleLine(rotateCoord(st, 0.25 * M_PI), WHITE, WHITE, currentColor, -1., 0.5);
+    currentColor = circleLine(rotateCoord(scaleCoord(st, vec2(0.2)), 0.25 * PI), WHITE, BLACK, currentColor, 0.5, 0.0);
+    currentColor = circleLine(rotateCoord(st, 0.25 * PI), WHITE, WHITE, currentColor, -1., 0.5);
     currentColor = circleLine(st, LILA, ORANGE, currentColor, 0.0, 0.5);
     currentColor = circleLine(st, ORANGE, LILA, currentColor, 0.5, 0.);
     currentColor = circleLine(scaleCoord(st, vec2(0.2)), BLACK, WHITE, currentColor, 0.5, 0.);
