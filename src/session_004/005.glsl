@@ -17,13 +17,16 @@ void main() {
     vec2 st = setupCoord(gl_FragCoord.xy, u_resolution);
     vec4 currentColor = BLACK;
 
-    currentColor = circleLine(st, WHITE, LILA, currentColor, 0.0, 1.0);
-    currentColor = circleLine(st, LILA, WHITE, currentColor, 0.0, .0);
-    currentColor = circleLine(rotateCoord(st, 0.5 * PI), BLACK, GREEN, currentColor, 0.0, .0);
+    vec2 lineSt = st;
+    //lineSt *= 0.5;
 
+    currentColor = circleLine(rotateCoord(lineSt, .75 * PI), WHITE, RED, currentColor, 0.0, .0);
+    currentColor = circleLine(lineSt, WHITE, LILAC, currentColor, 0.0, 0.0);
+    currentColor = circleLine(lineSt, WHITE, LILAC, currentColor, 1.0, .0);
+    
     bool window = mod(u_time, 10.) < 5.;
-    window = false;
-    currentColor = smiley(st, BLACK, currentColor, window);
+    //window = false;
+    currentColor = smiley(st, WHITE, currentColor, window);
 
     gl_FragColor=currentColor;
 }

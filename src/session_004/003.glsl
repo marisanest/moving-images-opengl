@@ -25,7 +25,8 @@ void main() {
     currentColor = circleLine(st, ORANGE, LILA, currentColor, 0.5, 0.);
     currentColor = circleLine(scaleCoord(st, vec2(0.2)), BLACK, WHITE, currentColor, 0.5, 0.);
     
-    //currentColor = smiley(st, BLACK, currentColor, mod(u_time, 10.) < 5.);
+    //bool window = false; //mod(u_time, 10.) < 5.;
+    //currentColor = smiley(st, BLACK, currentColor, window);
     
     gl_FragColor=currentColor;
 }
