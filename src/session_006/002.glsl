@@ -100,7 +100,7 @@ void main(void){
     } else if (rand < .75) {
         currentColor = smileyMouthTile(tileSt, WHITE, BLACK);
     } else {
-        currentColor = smileyEyeTile(tileSt, WHITE, BLACK);
+        currentColor = smileyMouthTile(tileSt, WHITE, BLACK);
     };
 
     gl_FragColor=currentColor;

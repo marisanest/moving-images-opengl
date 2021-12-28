@@ -9,27 +9,34 @@ uniform float u_time;
 #include "../libs/local/boolean-ops.glsl"
 #include "../libs/local/coord-ops.glsl"
 #include "../libs/local/style.glsl"
+#include "../libs/local/colors.glsl"
 
 void main() {
-    vec2 st = setupCoord(gl_FragCoord.xy, u_resolution);
+    vec2 coord = setupCoord(gl_FragCoord.xy, u_resolution);
 
-    vec4 colorA = vec4(1.0, 1.0, 1.0, 1.0);
-    vec4 colorB = vec4(0.0, 0.0, 0.0, 1.0);
-    vec4 resultColor;
+    //coord *= 2.0;
+    coord *= .8;
+    //coord = fract(coord);
+    //coord -= 0.5;
+    //coord *= coord;
     
-    vec2 circleASt = st;
-    vec2 circleBSt = st;
+    vec4 backgroundColor = BLACK;
 
-    circleASt = scaleCoord(circleASt, vec2(1., sin(u_time * 0.5) * sin(u_time)));
-    circleASt = translateCoord(circleASt, vec2(0.2, 0.2));
+    vec2 circleCoord = coord;
+    circleCoord = scaleCoord(circleCoord, vec2(1., sin(u_time * 0.5) * sin(u_time)));
+    circleCoord = translateCoord(circleCoord, vec2(0.2, 0.2));
+    //circleCoord = translateCoord(circleCoord, vec2(adjustedSin(u_time, 1.0, -0.25, 0.2), adjustedCos(u_time, 1.0, -0.2, 0.2)));
 
-    float circleA = circle(circleASt, 0.2);
-    float circleStrokes = stroke(circleA, .002, 0.05, 0.05);
-    resultColor = mix(colorA, colorB, circleStrokes);
+    float circleShape = circle(circleCoord, 0.2);
+    float circleStroke = stroke(circleShape, .002, 0.05, 0.05);
+    
+    backgroundColor = mix(WHITE, backgroundColor, circleStroke);
 
-    float circleB = circle(circleBSt, 0.2);
-    circleStrokes = stroke(circleB, .002, 0.05, 0.05);
-    resultColor = mix(colorB, resultColor, circleStrokes);
+    circleCoord = coord;
+    circleShape = circle(circleCoord, 0.2);
+    circleStroke = stroke(circleShape, .002, 0.05, 0.05);
+    
+    backgroundColor = mix(BLACK, backgroundColor, circleStroke);
 
-    gl_FragColor=resultColor;
+    gl_FragColor = backgroundColor;
 }

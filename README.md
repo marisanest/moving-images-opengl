@@ -2,11 +2,11 @@
 
 ## glslViewer
 
-> glslViewer <file_name>.frag -w 1080 -h 1920 --headless -E sequence,<A_sec>,<B_sec>[,fps]
+> glslViewer 001.frag -w 1080 -h 1920 --headless -E sequence,0,10,30
 
 ## Ffmpeg
  
-> ffmpeg -r 60 -i %05d.png -c:v libx264 -pix_fmt yuv420p out.mp4
+> ffmpeg -r 30 -i %05d.png -c:v libx264 -pix_fmt yuv420p 001.mp4
 
 ## Gimp
 

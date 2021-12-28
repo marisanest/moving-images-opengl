@@ -29,7 +29,7 @@ void main() {
     float shape = length(coord);
     shape = .03 / shape;
     
-    vec4 backgroundColor = mix(WHITE, LILA, shape);
+    vec4 backgroundColor = mix(BLACK, WHITE, shape);
     //vec4 backgroundColor = vec4(vec3(shape), 1.0);
     
 	gl_FragColor = backgroundColor;
