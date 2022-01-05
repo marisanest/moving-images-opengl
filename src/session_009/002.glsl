@@ -7,28 +7,43 @@ uniform float u_time;
 
 #include "../libs/local/coord-ops.glsl"
 #include "../libs/local/colors.glsl"
+#include "../libs/local/math.glsl"
+#include "../libs/local/boolean-ops.glsl"
 
 float noise( vec2 p )
 {
 	return sin(p.x)*sin(p.y);
 }
 
-float fbm( vec2 p )
-{
+float fbm( vec2 p ){
     float f = 0.0;
-    mat2 m = mat2( 0.80,  0.60, -0.60,  0.80 );
-    f += 0.5000*noise( p ); p = m*p*2.02;
-    f += 0.2500*noise( p ); p = m*p*2.03;
-    f += 0.1250*noise( p ); p = m*p*2.01;
-    f += 0.0625*noise( p );
-    return f/0.9375;
+    mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
+    
+    f += 0.5 * noise(p);
+
+    p = m * p * 2.02;
+    f += 0.25 * noise(p);
+
+    p = m * p * 2.02;
+    f += 0.125 * noise(p); 
+    
+    p = m * p * 2.02; // 100.
+    f += 0.0625 * noise(p);
+    
+    return f;
 }
 
-float pattern( vec2 p )
+float pattern( vec2 coord )
 {
-    vec2 q = vec2(fbm(p));
-
-    return fbm(p + 4.0 * q );
+    return fbm(
+        coord 
+        + adjustedSin(u_time, 0.5, 4.0, 20.)
+        * fbm(coord + 4.0 
+            * fbm(coord + 4.0 
+               * fbm(coord)
+            )
+        )
+    );
 }
 
 void main() {
