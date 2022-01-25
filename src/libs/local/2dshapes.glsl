@@ -85,3 +85,8 @@ float sdBezier(in vec2 pos, in vec2 A, in vec2 B, in vec2 C) {
     }
     return sqrt( res );
 }
+
+mat2 rotate2d(float _angle){
+    return mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle));
+}
