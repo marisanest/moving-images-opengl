@@ -22,8 +22,8 @@ float shape(vec2 coord, float radius) {
     float m = abs(mod(a + u_time * 2., 3.14 * 2.) - 3.14) / 3.6;
     float f = radius;
     
-    m += noise(coord + u_time * 0.1) * .5;
-    f += sin(a * 50.) * noise(coord + u_time * .2) * .1;
+    m += gnoise(coord + u_time * 0.1) * .5;
+    f += sin(a * 50.) * gnoise(coord + u_time * .2) * .1;
     f += (sin(a * 20.) * .1 * pow(m, 2.));
     
     return 1. - smoothstep(f, f + 0.007, r);
@@ -34,8 +34,11 @@ float shapeBorder(vec2 st, float radius, float width) {
 }
 
 void main() {
-	vec2 st = gl_FragCoord.xy / u_resolution.xy;
-	vec3 color = vec3(1.0) * shapeBorder(st, 0.8, 0.02);
+    vec2 coord = normalizeCoord(gl_FragCoord.xy, u_resolution.xy);
+    //coord = fixCoordRatio(coord, u_resolution);
+	
+    float color = shapeBorder(coord, 0.8, 0.02);
+    color = 1. - color;
 
-	gl_FragColor = vec4(1. - color, 1.0);
+	gl_FragColor = vec4(vec3(color), 1.0);
 }

@@ -1,4 +1,5 @@
-#define PI 3.1415926535897932384626433832795
+#define PI 3.14159265359
+#define TWO_PI 6.28318530718
 
 float applyMinMax(float value, float minValue, float maxValue) {
     float ratio = (maxValue - minValue) / 2.0;
